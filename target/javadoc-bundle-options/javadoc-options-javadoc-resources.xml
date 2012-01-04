@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javadocOptions>
+  <docletArtifacts>
+    <docletArtifact>
+      <groupId>org.mule.tools.devkit</groupId>
+      <artifactId>mule-devkit-doclet</artifactId>
+      <version>3.0.1</version>
+    </docletArtifact>
+  </docletArtifacts>
+  <tagletArtifacts>
+    <tagletArtifact />
+  </tagletArtifacts>
+  <javadocResourcesDirectory>src/main/javadoc</javadocResourcesDirectory>
+</javadocOptions>

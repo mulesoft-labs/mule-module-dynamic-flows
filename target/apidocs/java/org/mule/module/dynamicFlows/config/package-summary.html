@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="description" content="Documentation for Mule Cloud Connector." />
+
+<link rel="shortcut icon" type="image/x-icon" href="../../../../../../favicon.ico" />
+<title>
+
+  org.mule.module.dynamicFlows.config
+
+
+| Mule Cloud Connector
+
+</title>
+<link href="../../../../../../assets/mule-developer-docs.css" rel="stylesheet" type="text/css" />
+<link href="../../../../../../assets/mule-developer-prettify.css" rel="stylesheet" type="text/css" />
+<link href="../../../../../../assets/customizations.css" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
+<script src="../../../../../../assets/search_autocomplete.js" type="text/javascript"></script>
+<script src="../../../../../../assets/jquery-resizable.min.js" type="text/javascript"></script>
+<script src="../../../../../../assets/mule-developer-docs.js" type="text/javascript"></script>
+<script src="../../../../../../assets/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+  setToRoot("../../../../../../", "../../../../../../assets/");
+</script>
+<script src="../../../../../../assets/mule-developer-reference.js" type="text/javascript"></script>
+<script src="../../../../../../assets/navtree_data.js" type="text/javascript"></script>
+<script src="../../../../../../assets/customizations.js" type="text/javascript"></script>
+<noscript>
+  <style type="text/css">
+    html,body{overflow:auto;}
+    #body-content{position:relative; top:0;}
+    #doc-content{overflow:visible;border-left:3px solid #666;}
+    #side-nav{padding:0;}
+    #side-nav .toggle-list ul {display:block;}
+    #resize-packages-nav{border-bottom:3px solid #666;}
+  </style>
+</noscript>
+</head>
+
+<body class="">
+
+<div id="header">
+    <div id="headerLeft">
+    
+      <span id="masthead-title">Mule Cloud Connector</span>
+    
+    <ul id="header-tabs" class="java">
+    	<li id="guide"><a href="../../../../../../guide/install.html">
+	    	<span class="en">Install Guide</span>
+    	</a></li>
+    	<li id="java"><a href="../../../../../../java/packages.html">
+	    	<span class="en">Java API</span>
+    	</a></li>
+    	<li id="mule"><a href="../../../../../../mule/modules.html">
+	    	<span class="en">Mule API</span>
+    	</a></li>
+    </ul>
+    </div>
+    <div id="headerRight">
+      <a href="http://www.mulesoft.com" tabindex="-1">
+      <img src="../../../../../../assets//images/mulesoft-logo-final.gif" alt="MuleSoft" border="0" id="mulesoftlogo"></a><br/>
+      
+  <div id="search" >
+      <div id="searchForm">
+          <form accept-charset="utf-8" class="gsc-search-box" 
+                onsubmit="return submit_search()">
+            <table class="gsc-search-box" cellpadding="0" cellspacing="0"><tbody>
+                <tr>
+                  <td class="gsc-input">
+                    <input id="search_autocomplete" class="gsc-input" type="text" size="33" autocomplete="off"
+                      title="search developer docs" name="q"
+                      value="search developer docs"
+                      onFocus="search_focus_changed(this, true)"
+                      onBlur="search_focus_changed(this, false)"
+                      onkeydown="return search_changed(event, true, '../../../../../../')"
+                      onkeyup="return search_changed(event, false, '../../../../../../')" />
+                  <div id="search_filtered_div" class="no-display">
+                      <table id="search_filtered" cellspacing=0>
+                      </table>
+                  </div>
+                  </td>
+                  <td class="gsc-search-button">
+                    <input type="submit" value="Search" title="search" id="search-button" class="gsc-search-button" />
+                  </td>
+                  <td class="gsc-clear-button">
+                    <div title="clear results" class="gsc-clear-button">&nbsp;</div>
+                  </td>
+                </tr></tbody>
+              </table>
+          </form>
+      </div><!-- searchForm -->
+  </div><!-- search -->
+      
+    </div>
+</div><!-- header -->
+
+
+  <div class="g-section g-tpl-240" id="body-content">
+    <div class="g-unit g-first side-nav-resizable" id="side-nav">
+      <div id="swapper">
+        <div id="nav-panels">
+          <div id="resize-packages-nav">
+            <div id="packages-nav">
+              <div id="index-links">
+                <a href="../../../../../../java/packages.html"  >Package Index</a> |
+                <a href="../../../../../../java/classes.html" >Class Index</a>
+              </div>
+              <ul>
+                
+    <li class="api apilevel-">
+  <a href="../../../../../../java/org/mule/module/dynamicFlows/package-summary.html">org.mule.module.dynamicFlows</a></li>
+    <li class="selected api apilevel-">
+  <a href="../../../../../../java/org/mule/module/dynamicFlows/config/package-summary.html">org.mule.module.dynamicFlows.config</a></li>
+    <li class="api apilevel-">
+  <a href="../../../../../../java/org/mule/module/dynamicFlows/config/spring/package-summary.html">org.mule.module.dynamicFlows.config.spring</a></li>
+              </ul><br/>
+            </div> <!-- end packages -->
+          </div> <!-- end resize-packages -->
+          <div id="classes-nav">
+            <ul>
+              
+              
+    <li><h2>Classes</h2>
+      <ul>
+        <li class="api apilevel-"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/AddMessageProcessor.html">AddMessageProcessor</a></li>
+        <li class="api apilevel-"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/DynamicFlowsModuleCapabilitiesAdapter.html">DynamicFlowsModuleCapabilitiesAdapter</a></li>
+        <li class="api apilevel-"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/DynamicFlowsModuleLifecycleAdapter.html">DynamicFlowsModuleLifecycleAdapter</a></li>
+        <li class="api apilevel-"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/RemoveMessageProcessor.html">RemoveMessageProcessor</a></li>
+        <li class="api apilevel-"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/RunMessageProcessor.html">RunMessageProcessor</a></li>
+      </ul>
+    </li>
+              
+              
+              
+              
+            </ul><br/>
+          </div><!-- end classes -->
+        </div><!-- end nav-panels -->
+        <div id="nav-tree" style="display:none">
+          <div id="index-links">
+            <a href="../../../../../../packages.html"  >Package Index</a> | 
+            <a href="../../../../../../classes.html" >Class Index</a>
+          </div>
+        </div><!-- end nav-tree -->
+      </div><!-- end swapper -->
+    </div> <!-- end side-nav -->
+    <script>
+      if (!isMobile) {
+        $("<a href='#' id='nav-swap' onclick='swapNav();return false;' style='font-size:10px;line-height:9px;margin-left:1em;text-decoration:none;'><span id='tree-link'>Use Tree Navigation</span><span id='panel-link' style='display:none'>Use Panel Navigation</span></a>").appendTo("#side-nav");
+        chooseDefaultNav();
+        if ($("#nav-tree").is(':visible')) {
+          init_default_navtree("../../../../../../");
+        } else {
+          addLoadEvent(function() {
+            scrollIntoView("packages-nav");
+            scrollIntoView("classes-nav");
+          });
+        }
+        $("#swapper").css({borderBottom:"2px solid #aaa"});
+      } else {
+        swapNav(); // tree view should be used on mobile
+      }
+    </script>
+
+
+
+<div class="g-unit" id="doc-content">
+
+<div id="api-info-block">
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div>
+
+<div id="jd-header">
+  package
+  <h1>org.mule.module.dynamicFlows.config</h1>
+</div><!-- end header -->
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+  
+
+
+  
+    <h2>Classes</h2>
+    <div class="jd-sumtable">
+    
+  <table class="jd-sumtable-expando">
+        <tr class="alt-color api apilevel-" >
+              <td class="jd-linkcol"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/AddMessageProcessor.html">AddMessageProcessor</a></td>
+              <td class="jd-descrcol" width="100%">AddMessageProcessor invokes the <code><a href="../../../../../../java/org/mule/module/dynamicFlows/DynamicFlowsModule.html#add(java.lang.String, java.util.List<java.lang.String>)">add(java.lang.String, java.util.List)</a></code> method in <code><a href="../../../../../../java/org/mule/module/dynamicFlows/DynamicFlowsModule.html">DynamicFlowsModule</a></code>.&nbsp;</td>
+          </tr>
+        <tr class=" api apilevel-" >
+              <td class="jd-linkcol"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/DynamicFlowsModuleCapabilitiesAdapter.html">DynamicFlowsModuleCapabilitiesAdapter</a></td>
+              <td class="jd-descrcol" width="100%">A <code>DynamicFlowsModuleCapabilitiesAdapter</code> is a wrapper around <code><a href="../../../../../../java/org/mule/module/dynamicFlows/DynamicFlowsModule.html">DynamicFlowsModule</a></code> that implements org.mule.api.Capabilities interface.&nbsp;</td>
+          </tr>
+        <tr class="alt-color api apilevel-" >
+              <td class="jd-linkcol"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/DynamicFlowsModuleLifecycleAdapter.html">DynamicFlowsModuleLifecycleAdapter</a></td>
+              <td class="jd-descrcol" width="100%">A <code>DynamicFlowsModuleLifecycleAdapter</code> is a wrapper around <code><a href="../../../../../../java/org/mule/module/dynamicFlows/DynamicFlowsModule.html">DynamicFlowsModule</a></code> that adds lifecycle methods to the pojo.&nbsp;</td>
+          </tr>
+        <tr class=" api apilevel-" >
+              <td class="jd-linkcol"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/RemoveMessageProcessor.html">RemoveMessageProcessor</a></td>
+              <td class="jd-descrcol" width="100%">RemoveMessageProcessor invokes the <code><a href="../../../../../../java/org/mule/module/dynamicFlows/DynamicFlowsModule.html#remove(java.lang.String)">remove(java.lang.String)</a></code> method in <code><a href="../../../../../../java/org/mule/module/dynamicFlows/DynamicFlowsModule.html">DynamicFlowsModule</a></code>.&nbsp;</td>
+          </tr>
+        <tr class="alt-color api apilevel-" >
+              <td class="jd-linkcol"><a href="../../../../../../java/org/mule/module/dynamicFlows/config/RunMessageProcessor.html">RunMessageProcessor</a></td>
+              <td class="jd-descrcol" width="100%">RunMessageProcessor invokes the <code><a href="../../../../../../java/org/mule/module/dynamicFlows/DynamicFlowsModule.html#run(java.lang.String, java.lang.String, java.lang.Object)">run(java.lang.String, java.lang.String, java.lang.Object)</a></code> method in <code><a href="../../../../../../java/org/mule/module/dynamicFlows/DynamicFlowsModule.html">DynamicFlowsModule</a></code>.&nbsp;</td>
+          </tr>
+  </table>
+    </div>
+  
+
+
+  
+
+
+  
+
+
+  
+
+
+<div id="footer">
+Generated by <a href="http://www.mulesoft.com/devkit">Mule DevKit</a>. Document generation technology based on <a href="http://code.google.com/p/doclava/">Google's Doclava</a>.
+</div> <!-- end footer -->
+
+</div><!-- end jd-content -->
+</div><!-- doc-content -->
+
+</div> <!-- end body-content --> 
+
+<script type="text/javascript">
+init(); /* initialize mule-developer-docs.js */
+</script>
+
+</body>
+</html>

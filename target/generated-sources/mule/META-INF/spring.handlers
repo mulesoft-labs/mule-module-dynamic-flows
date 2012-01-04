@@ -1,0 +1,2 @@
+http\://www.mulesoft.org/schema/mule/dynamicflows=org.mule.module.dynamicFlows.config.spring.DynamicFlowsModuleNamespaceHandler
+http\://www.mulesoft.org/schema/mule/dynamicflows=org.mule.module.dynamicFlows.config.spring.DynamicFlowsModuleNamespaceHandler
