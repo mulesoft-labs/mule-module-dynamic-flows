@@ -71,7 +71,7 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
 	/**
 	 * Adds a dynamic context to the main application.
 	 *
-	 * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:my-processor}
+	 * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:add}
 	 *
 	 * @param contextName The context identifier
 	 * @param configs The configuration files of the context that is going to be added.
@@ -101,7 +101,7 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
 	/**
 	 * Removes a context from the main application
 	 *
-	 *{@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:my-processor}
+	 *{@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:remove}
 	 *
 	 * @param contextName The context identifier
 	 */
@@ -117,7 +117,7 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
 	/**
 	 * Runs the flow added dynamically
 	 *
-	 * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:my-processor}
+	 * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:run}
 	 *
 	 * @param contextName The context identifier
 	 * @param flowName The flow identifier
