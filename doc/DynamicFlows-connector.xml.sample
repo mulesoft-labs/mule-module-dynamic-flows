@@ -27,6 +27,6 @@ contextName = The context name, and configs= a List of mule configs xml strings-
 	<dynamicflows:config />
 
  	<flow name="testRun">
-		<dynamicflows:run contextName="testContext" flowName="echo1" request-ref="#[payload]"/>
+		<dynamicflows:run contextName="testContext" flowName="echo1"/>
 	</flow> 
 <!-- END_INCLUDE(dynamicflows:run) -->

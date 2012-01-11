@@ -20,16 +20,6 @@
  */
 package org.mule.module.dynamicFlows;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.management.RuntimeErrorException;
-
 import org.mule.DefaultMuleEvent;
 import org.mule.DefaultMuleMessage;
 import org.mule.MessageExchangePattern;
@@ -39,6 +29,7 @@ import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
 import org.mule.api.annotations.Module;
 import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.param.Payload;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.api.context.MuleContextAware;
 import org.mule.api.context.MuleContextBuilder;
@@ -55,6 +46,10 @@ import org.mule.session.DefaultMuleSession;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import javax.management.RuntimeErrorException;
+import java.io.ByteArrayInputStream;
+import java.util.*;
 
 /**
  * Adds, removes and runs dynamic Flows
@@ -121,16 +116,16 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
 	 *
 	 * @param contextName The context identifier
 	 * @param flowName The flow identifier
-	 * @param request The flow's payload 
+	 * @param payload The flow's payload
 	 * @return The mule Message
 	 */
 	@Processor
-	public MuleMessage run(String contextName, String flowName, Object request) throws MuleException
+	public MuleMessage run(String contextName, String flowName, @Payload Object payload) throws MuleException
 	{
 		MuleContext context = getContextWith(contextName);
 		Flow flow = getFlowUsing(flowName, context);
 
-		MuleMessage message = new DefaultMuleMessage(request, context);
+		MuleMessage message = new DefaultMuleMessage(payload, context);
 		MuleEvent event =  new DefaultMuleEvent(message, MessageExchangePattern.REQUEST_RESPONSE, new DefaultMuleSession(flow, context));
 
 		return flow.process(event).getMessage();

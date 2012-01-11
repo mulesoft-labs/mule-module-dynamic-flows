@@ -36,6 +36,6 @@
 	</flow>
 
  	<flow name="testRun">
-		<dynamicflows:run contextName="testContext" flowName="echo1" request-ref="#[payload]"/>
+		<dynamicflows:run contextName="testContext" flowName="echo1"/>
 	</flow> 
 </mule>
