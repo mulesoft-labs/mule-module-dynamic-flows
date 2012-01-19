@@ -20,16 +20,11 @@
  */
 package org.mule.module.dynamicFlows;
 
-import org.mule.DefaultMuleEvent;
-import org.mule.DefaultMuleMessage;
-import org.mule.MessageExchangePattern;
 import org.mule.api.MuleContext;
-import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
 import org.mule.api.annotations.Module;
 import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.param.Payload;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.api.context.MuleContextAware;
 import org.mule.api.context.MuleContextBuilder;
@@ -42,7 +37,6 @@ import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;
 import org.mule.context.notification.MuleContextNotification;
 import org.mule.context.notification.NotificationException;
-import org.mule.session.DefaultMuleSession;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -59,182 +53,177 @@ import java.util.*;
 @Module(name="dynamicflows", schemaVersion="1.0")
 public class DynamicFlowsModule implements ApplicationContextAware, MuleContextNotificationListener<MuleContextNotification>, MuleContextAware
 {
-	private ApplicationContext applicationContext;
-	private MuleContext mainContext;
-	private Map<String,MuleContext> contexts = Collections.synchronizedMap(new HashMap<String, MuleContext>());
+    private ApplicationContext applicationContext;
+    private MuleContext mainContext;
+    private Map<String,MuleContext> contexts = Collections.synchronizedMap(new HashMap<String, MuleContext>());
 
-	/**
-	 * Adds a dynamic context to the main application.
-	 *
-	 * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:add}
-	 *
-	 * @param contextName The context identifier
-	 * @param configs The configuration files of the context that is going to be added.
-	 */
-	@Processor
-	public void add(String contextName, List<String> configs)
-	{
-		checkExistenceOf(contextName);
+    /**
+     * Adds a dynamic context to the main application.
+     *
+     * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:add}
+     *
+     * @param contextName The context identifier
+     * @param configs The configuration files of the context that is going to be added.
+     */
+    @Processor
+    public void add(String contextName, List<String> configs)
+    {
+        checkExistenceOf(contextName);
 
-		try{
-			MuleContextFactory muleContextFactory = new DefaultMuleContextFactory();
-			List<ConfigurationBuilder> builders = new ArrayList<ConfigurationBuilder>();
-			builders.add( springApplicationBuilderUsing(configs));
-			MuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
-			MuleContext context = muleContextFactory.createMuleContext(builders, contextBuilder);	
+        try{
+            MuleContextFactory muleContextFactory = new DefaultMuleContextFactory();
+            List<ConfigurationBuilder> builders = new ArrayList<ConfigurationBuilder>();
+            builders.add( springApplicationBuilderUsing(configs));
+            MuleContextBuilder contextBuilder = new DefaultMuleContextBuilder();
+            MuleContext context = muleContextFactory.createMuleContext(builders, contextBuilder);
 
-			context.start();
+            context.start();
 
-			if (context.isStarted())
-				contexts.put(contextName, context); 
-		}
-		catch(Exception e){
-			throw new RuntimeException(e);
-		}
-	}
+            if (context.isStarted())
+                contexts.put(contextName, context);
+        }
+        catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 
-	/**
-	 * Removes a context from the main application
-	 *
-	 *{@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:remove}
-	 *
-	 * @param contextName The context identifier
-	 */
-	@Processor
-	public void remove(String contextName)
-	{
-		checkExistenceOf(contextName);
-		
-		contexts.remove(contextName);
-	}
+    /**
+     * Removes a context from the main application
+     *
+     *{@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:remove}
+     *
+     * @param contextName The context identifier
+     */
+    @Processor
+    public void remove(String contextName)
+    {
+        checkExistenceOf(contextName);
 
-	
-	/**
-	 * Runs the flow added dynamically
-	 *
-	 * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:run}
-	 *
-	 * @param contextName The context identifier
-	 * @param flowName The flow identifier
-	 * @param payload The flow's payload
-	 * @return The mule Message
-	 */
-	@Processor
-	public MuleMessage run(String contextName, String flowName, @Payload Object payload) throws MuleException
-	{
-		MuleContext context = getContextWith(contextName);
-		Flow flow = getFlowUsing(flowName, context);
-
-		MuleMessage message = new DefaultMuleMessage(payload, context);
-		MuleEvent event =  new DefaultMuleEvent(message, MessageExchangePattern.REQUEST_RESPONSE, new DefaultMuleSession(flow, context));
-
-		return flow.process(event).getMessage();
-	}
+        contexts.remove(contextName);
+    }
 
 
-	/**
-	 * Sets the parent application context.
-	 * 
-	 * @see{org.springframework.context.ApplicationContextAware}
-	 * @param applicationContext
-	 * @throws BeansException
-	 */
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
+    /**
+     * Runs the flow added dynamically
+     *
+     * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:run}
+     *
+     * @param contextName The context identifier
+     * @param flowName The flow identifier
+     * @param message The flow's payload
+     * @return The mule Message
+     */
+    @Processor
+    public MuleMessage run(String contextName, String flowName, MuleMessage message) throws MuleException
+    {
+        MuleContext context = getContextWith(contextName);
+        return context.getClient().send("vm://" + flowName, message);
+    }
 
-	}
-	
-	@Override
-	public void onNotification(MuleContextNotification notification) {
-		if ( notification.getAction() == MuleContextNotification.CONTEXT_STOPPED )
-		{
-			stopAndDisposeContexts();
-		}
-	}
 
-	@Override
-	public void setMuleContext(MuleContext context) {
-		this.mainContext = context;
-		registerAsListener();
-	}
-	
-	private SpringXmlConfigurationBuilder springApplicationBuilderUsing(List<String> payload) {
-		ConfigResource[] resources = createResources(payload);
-		SpringXmlConfigurationBuilder springXmlConfigurationBuilder = new SpringXmlConfigurationBuilder(resources);
-		springXmlConfigurationBuilder.setParentContext(this.applicationContext);
-		return springXmlConfigurationBuilder;
-	}
+    /**
+     * Sets the parent application context.
+     *
+     * @see{org.springframework.context.ApplicationContextAware}
+     * @param applicationContext
+     * @throws BeansException
+     */
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext)
+            throws BeansException {
+        this.applicationContext = applicationContext;
 
-	private ConfigResource[] createResources(List<String> muleConfigs) {
+    }
 
-		ConfigResource[] configResources = new ConfigResource[muleConfigs.size()];
+    @Override
+    public void onNotification(MuleContextNotification notification) {
+        if ( notification.getAction() == MuleContextNotification.CONTEXT_STOPPED )
+        {
+            stopAndDisposeContexts();
+        }
+    }
 
-		Iterator<String> it = muleConfigs.iterator();
-		for (int i=0; it.hasNext(); i++) {
-			String muleConfig = it.next();
-			configResources[i] = new ConfigResource("context"+i+".xml", new ByteArrayInputStream(muleConfig.getBytes()));
-		}
+    @Override
+    public void setMuleContext(MuleContext context) {
+        this.mainContext = context;
+        registerAsListener();
+    }
 
-		return configResources;
-	}
+    private SpringXmlConfigurationBuilder springApplicationBuilderUsing(List<String> payload) {
+        ConfigResource[] resources = createResources(payload);
+        SpringXmlConfigurationBuilder springXmlConfigurationBuilder = new SpringXmlConfigurationBuilder(resources);
+        springXmlConfigurationBuilder.setParentContext(this.applicationContext);
+        return springXmlConfigurationBuilder;
+    }
 
-	private Flow getFlowUsing(String flowName, MuleContext context) {
-		Flow flow = (Flow) context.getRegistry().lookupFlowConstruct(flowName);
-		if (flow == null) throw new RuntimeErrorException(new Error("flow does not exist"));
-		return flow;
-	}
+    private ConfigResource[] createResources(List<String> muleConfigs) {
 
-	private MuleContext getContextWith(String contextName) {
-		MuleContext context = contexts.get(contextName);
+        ConfigResource[] configResources = new ConfigResource[muleConfigs.size()];
 
-		if (context == null ) throw new RuntimeErrorException(new Error("Context does not exist"));
-		return context;
-	}
+        Iterator<String> it = muleConfigs.iterator();
+        for (int i=0; it.hasNext(); i++) {
+            String muleConfig = it.next();
+            configResources[i] = new ConfigResource("context"+i+".xml", new ByteArrayInputStream(muleConfig.getBytes()));
+        }
 
-	private void checkExistenceOf(String contextName) {
-		if (contexts.containsKey(contextName))
-			throw new RuntimeErrorException(new Error("Context already exists"));
-	}
+        return configResources;
+    }
+
+    private Flow getFlowUsing(String flowName, MuleContext context) {
+        Flow flow = (Flow) context.getRegistry().lookupFlowConstruct(flowName);
+        if (flow == null) throw new RuntimeErrorException(new Error("flow does not exist"));
+        return flow;
+    }
+
+    private MuleContext getContextWith(String contextName) {
+        MuleContext context = contexts.get(contextName);
+
+        if (context == null ) throw new RuntimeErrorException(new Error("Context does not exist"));
+        return context;
+    }
+
+    private void checkExistenceOf(String contextName) {
+        if (contexts.containsKey(contextName))
+            throw new RuntimeErrorException(new Error("Context already exists"));
+    }
 
 
 
-	private void stopAndDisposeContexts() {
-		List<String> unstoppedContexts = new ArrayList<String>();
-		for ( MuleContext context: contexts.values())
-		{
-			try {
-				context.stop();
-				context.dispose();
-			} catch (MuleException e) {
-				unstoppedContexts.add(context.getUniqueIdString());
-			}
-		}
-		
-		if ( !unstoppedContexts.isEmpty() )
-			throw new RuntimeException(new Error("This contexts could not be stopped: " + join(unstoppedContexts)));
-	}
-	
+    private void stopAndDisposeContexts() {
+        List<String> unstoppedContexts = new ArrayList<String>();
+        for ( MuleContext context: contexts.values())
+        {
+            try {
+                context.stop();
+                context.dispose();
+            } catch (MuleException e) {
+                unstoppedContexts.add(context.getUniqueIdString());
+            }
+        }
+
+        if ( !unstoppedContexts.isEmpty() )
+            throw new RuntimeException(new Error("This contexts could not be stopped: " + join(unstoppedContexts)));
+    }
 
 
-	private void registerAsListener() {
-		try {
-			this.mainContext.registerListener(this);
-		} catch (NotificationException e) {
-			throw new RuntimeException(new Error("Could not be register as listener, aborting..."));
-		}
-	}
-	
-	private String join(List<String> coll)
-	{
-	    StringBuilder sb = new StringBuilder();
-	 
-	    for (String x : coll)
-		sb.append(x + ",");
-	 
-	    sb.delete(sb.length()-1, sb.length());
-	 
-	    return sb.toString();
-	}
+
+    private void registerAsListener() {
+        try {
+            this.mainContext.registerListener(this);
+        } catch (NotificationException e) {
+            throw new RuntimeException(new Error("Could not be register as listener, aborting..."));
+        }
+    }
+
+    private String join(List<String> coll)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        for (String x : coll)
+            sb.append(x + ",");
+
+        sb.delete(sb.length()-1, sb.length());
+
+        return sb.toString();
+    }
 }

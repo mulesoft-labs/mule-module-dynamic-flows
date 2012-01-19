@@ -9,8 +9,8 @@
     <name>Mule Cloud Connector</name>
 
     <properties>
-        <mule.version>3.2.0</mule.version>
-        <mule.devkit.version>3.0.1</mule.devkit.version>
+        <mule.version>3.2.1</mule.version>
+        <mule.devkit.version>3.2</mule.devkit.version>
         <junit.version>4.8.2</junit.version>
         <mockito.version>1.8.2</mockito.version>
     </properties>
@@ -43,7 +43,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -107,10 +107,11 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <excludePackageNames>org.mule.tooling.ui.contribution:*</excludePackageNames>
                     <docletArtifact>
                         <groupId>org.mule.tools.devkit</groupId>
                         <artifactId>mule-devkit-doclet</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.1.1-SNAPSHOT</version>
                     </docletArtifact>
                     <doclet>org.mule.devkit.doclet.Doclava</doclet>
                     <bootclasspath>${sun.boot.class.path}</bootclasspath>
@@ -118,16 +119,16 @@
                         -quiet
                         -federate JDK http://download.oracle.com/javase/6/docs/api/index.html?
                         -federationxml JDK http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
-						-hdf project.artifactId "${project.artifactId}"
-						-hdf project.groupId "${project.groupId}"
-						-hdf project.version "${project.version}"
+                        -hdf project.artifactId "${project.artifactId}"
+                        -hdf project.groupId "${project.groupId}"
+                        -hdf project.version "${project.version}"
                         -hdf project.name "${project.name}"
-						-hdf project.repo.name "${project.distributionManagement.repository.name}"
-						-hdf project.repo.id "${project.distributionManagement.repository.id}"
-						-hdf project.repo.url "${project.distributionManagement.repository.url}"
-						-hdf project.snapshotRepo.name "${project.distributionManagement.snapshotRepository.name}"
-						-hdf project.snapshotRepo.id "${project.distributionManagement.snapshotRepository.id}"
-						-hdf project.snapshotRepo.url "${project.distributionManagement.snapshotRepository.url}"
+                        -hdf project.repo.name "${project.distributionManagement.repository.name}"
+                        -hdf project.repo.id "${project.distributionManagement.repository.id}"
+                        -hdf project.repo.url "${project.distributionManagement.repository.url}"
+                        -hdf project.snapshotRepo.name "${project.distributionManagement.snapshotRepository.name}"
+                        -hdf project.snapshotRepo.id "${project.distributionManagement.snapshotRepository.id}"
+                        -hdf project.snapshotRepo.url "${project.distributionManagement.snapshotRepository.url}"
                         -d ${project.build.directory}/apidocs
                     </additionalparam>
                     <useStandardDocletOptions>false</useStandardDocletOptions>
@@ -148,29 +149,11 @@
     </build>
 
     <dependencies>
-        <dependency>
-           <groupId>org.mule.dsl</groupId>
-           <artifactId>dsl-api</artifactId>
-           <version>0.7</version>
-           <exclusions>
-               <exclusion>
-                   <groupId>org.mule</groupId>
-                   <artifactId>core</artifactId>
-               </exclusion>
-           </exclusions>
-           <scope>provided</scope>
-       </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
+         <dependency>
+            <groupId>org.mule</groupId>
+            <artifactId>mule-core</artifactId>
+            <version>${mule.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mule.modules</groupId>
@@ -183,6 +166,47 @@
             <version>${mule.devkit.version}</version>
         </dependency>
         <dependency>
+            <groupId>oauth.signpost</groupId>
+            <artifactId>signpost-core</artifactId>
+            <version>1.2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>eclipse-workbench</artifactId>
+            <version>3.6.1.M20100826-1330</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>eclipse-runtime</artifactId>
+            <version>3.6.0.v20100505</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>core</artifactId>
+            <version>4.3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.transports</groupId>
+            <artifactId>mule-transport-vm</artifactId>
+            <version>${mule.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.mule.tests</groupId>
             <artifactId>mule-tests-functional</artifactId>
             <version>${mule.version}</version>
@@ -192,14 +216,14 @@
 
     <repositories>
         <repository>
-            <id>muleforge-releases</id>
-            <name>MuleForge Releases Repository</name>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
             <url>http://repository.mulesoft.org/releases/</url>
             <layout>default</layout>
         </repository>
         <repository>
-            <id>muleforge-snapshots</id>
-            <name>MuleForge Snapshots Repository</name>
+            <id>mulesoft-snapshots</id>
+            <name>MuleSoft Snapshots Repository</name>
             <url>http://repository.mulesoft.org/snapshots/</url>
             <layout>default</layout>
         </repository>
@@ -207,8 +231,8 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>muleforge-plugin-releases</id>
-            <name>Muleforge Release Repository</name>
+            <id>mulesoft-plugin-releases</id>
+            <name>MuleSoft Release Repository</name>
             <url>http://repository.mulesoft.org/releases/</url>
             <releases>
                 <enabled>true</enabled>
@@ -218,8 +242,8 @@
             </snapshots>
         </pluginRepository>
         <pluginRepository>
-            <id>muleforge-plugin-snapshots</id>
-            <name>Muleforge Snapshot Repository</name>
+            <id>mulesoft-plugin-snapshots</id>
+            <name>MuleSoft Snapshot Repository</name>
             <url>http://repository.mulesoft.org/snapshots/</url>
             <releases>
                 <enabled>false</enabled>

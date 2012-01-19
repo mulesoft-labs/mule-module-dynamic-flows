@@ -1,15 +1,15 @@
 package util;
 
+import org.mule.api.MuleMessage;
+import org.mule.api.transformer.TransformerException;
+import org.mule.transformer.AbstractMessageTransformer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.mule.api.MuleMessage;
-import org.mule.api.transformer.TransformerException;
-import org.mule.transformer.AbstractMessageTransformer;
-
-public class SomeResourceTransformer  extends AbstractMessageTransformer
+public class SomeResourceTransformer extends AbstractMessageTransformer
 {
 
 	@Override
@@ -28,39 +28,29 @@ public class SomeResourceTransformer  extends AbstractMessageTransformer
 		
 		return configFiles;
 	}
-	
-	private static String muleConfig1 = "<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n" + 
-			"      xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" + 
-			"      xmlns:spring=\"http://www.springframework.org/schema/beans\"\n" + 
-			"      xmlns:dynamicflows=\"http://www.mulesoft.org/schema/mule/dynamicflows\"\n" + 
-			"      xsi:schemaLocation=\"\n" + 
-			"        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd\n" + 
-			"        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd\n" + 
-			"        http://www.mulesoft.org/schema/mule/dynamicflows http://www.mulesoft.org/schema/mule/dynamicflows/1.0/mule-dynamicflows.xsd\">\n" + 
-			"\n" + 
-			"\n" + 
-			"    \n" + 
-			"    <flow name=\"echo1\">\n" + 
-			"    	<echo-component />\n" + 
-			"    </flow>\n" + 
-			"\n" + 
-			"</mule>";
-	
-	private static String muleConfig2 = "<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\"\n" + 
-			"      xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" + 
-			"      xmlns:spring=\"http://www.springframework.org/schema/beans\"\n" + 
-			"      xmlns:dynamicflows=\"http://www.mulesoft.org/schema/mule/dynamicflows\"\n" + 
-			"      xsi:schemaLocation=\"\n" + 
-			"        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd\n" + 
-			"        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd\n" + 
-			"        http://www.mulesoft.org/schema/mule/dynamicflows http://www.mulesoft.org/schema/mule/dynamicflows/1.0/mule-dynamicflows.xsd\">\n" + 
-			"\n" + 
-			"\n" + 
-			"    \n" + 
-			"    <flow name=\"echo2\">\n" + 
-			"    	<echo-component />\n" + 
-			"    </flow>\n" + 
-			"\n" + 
-			"</mule>";
+
+    private static String muleConfig1 = "<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+            "      xmlns:vm=\"http://www.mulesoft.org/schema/mule/vm\"\n" +
+            "      xsi:schemaLocation=\"\n" +
+            "      http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/3.1/mule-vm.xsd\n" +
+            "        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd\">\n" +
+            "\n" +
+            "    <flow name=\"echo1\">\n" +
+            "            <vm:inbound-endpoint path=\"echo1\" exchange-pattern=\"request-response\"/>\n" +
+            "            \t<echo-component />\n" +
+            "            </flow>\n" +
+            "</mule>";
+
+    private static String muleConfig2 = "<mule xmlns=\"http://www.mulesoft.org/schema/mule/core\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+            "      xmlns:vm=\"http://www.mulesoft.org/schema/mule/vm\"\n" +
+            "      xsi:schemaLocation=\"\n" +
+            "      http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/3.1/mule-vm.xsd\n" +
+            "        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd\">\n" +
+            "\n" +
+            "    <flow name=\"echo2\">\n" +
+            "            <vm:inbound-endpoint path=\"echo2\" exchange-pattern=\"request-response\"/>\n" +
+            "            \t<echo-component />\n" +
+            "            </flow>\n" +
+            "</mule>";
 	
 }

@@ -39,41 +39,41 @@ public class DynamicFlowsModuleTest extends FunctionalTestCase
     @Test
     public void testAdd() throws Exception
     {
-    	addDynamicContext();
+        addDynamicContext();
     }
-    
+
     @Test
     public void testDelete() throws Exception
-    {     
+    {
         Flow flowDelete = lookupFlowConstruct("testDelete");
         MuleEvent eventDelete = AbstractMuleTestCase.getTestEvent(null);
         flowDelete.process(eventDelete);
     }
-    
+
     @Test
     public void testRun() throws Exception
     {
         addDynamicContext();
-        
+
         Flow flow = lookupFlowConstruct("testRun");
         MuleEvent event = AbstractMuleTestCase.getTestEvent("myRequest");
         MuleEvent responseEvent = flow.process(event);
 
         assertEquals("myRequest", responseEvent.getMessage().getPayload());
     }
-   
-	private void addDynamicContext() throws Exception, MuleException {
-		Flow flowAdd = lookupFlowConstruct("testAdd");
+
+    private void addDynamicContext() throws Exception, MuleException {
+        Flow flowAdd = lookupFlowConstruct("testAdd");
         MuleEvent eventAdd = AbstractMuleTestCase.getTestEvent(null);
         flowAdd.process(eventAdd);
-	}
+    }
 
     /**
-    * Run the flow specified by name and assert equality on the expected output
-    *
-    * @param flowName The name of the flow to run
-    * @param expect The expected output
-    */
+     * Run the flow specified by name and assert equality on the expected output
+     *
+     * @param flowName The name of the flow to run
+     * @param expect The expected output
+     */
     protected <T> void runFlowAndExpect(String flowName, T expect) throws Exception
     {
         Flow flow = lookupFlowConstruct(flowName);
@@ -84,13 +84,13 @@ public class DynamicFlowsModuleTest extends FunctionalTestCase
     }
 
     /**
-    * Run the flow specified by name using the specified payload and assert
-    * equality on the expected output
-    *
-    * @param flowName The name of the flow to run
-    * @param expect The expected output
-    * @param payload The payload of the input event
-    */
+     * Run the flow specified by name using the specified payload and assert
+     * equality on the expected output
+     *
+     * @param flowName The name of the flow to run
+     * @param expect The expected output
+     * @param payload The payload of the input event
+     */
     protected <T, U> void runFlowWithPayloadAndExpect(String flowName, T expect, U payload) throws Exception
     {
         Flow flow = lookupFlowConstruct(flowName);
