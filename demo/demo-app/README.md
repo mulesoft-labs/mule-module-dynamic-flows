@@ -1,5 +1,5 @@
 ABOUT DEMO APP
-===============
+==============
 
 This demo shows how dynamic flows can be used. It modifies a custom filed called 'packed' in the user campaigns. Users
 can define a different file packing for each campaign using dynamic flows.
