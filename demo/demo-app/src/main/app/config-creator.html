@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Config Creator</title>
+</head>
+<body>
+<p>Use this application to generate the dynamic flows for the mule component demo. </p>
+<p>The flow configuration created with this application generates a string with the important Salesforce fields for a particular campaign</p>
+<p>
+    Choose Important Fields
+</p>
+<p>
+<select id="fields" multiple='multiple'>
+    <option value="Name">Name</option>
+    <option value="BudgetedCost">BudgetedCost</option>
+    <option value="ActualCost">ActualCost</option>
+</select>
+</p>
+<p>
+<input type="submit" value="Generate mule Xml" onclick="generate()"/>
+</p>
+
+
+<form id="form" method="get" action="http://demo-app.muleion.com//add">
+
+    <p>
+        Campaign Name: <input type="text" name="campaignName"/>
+    </p>
+    <p>
+    mule xml: <textarea id="config" name="config" cols="200" rows="30">
+    </textarea>
+    </p>
+    <input type="submit" value="Assign a new Context to your account" />
+</form>
+
+
+<script>
+
+    function generate()
+    {   var xml = '<?xml version="1.0" encoding="UTF-8"?><mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:datapack="http://www.mulesoft.org/schema/mule/datapack" xmlns:pm="http://www.mulesoft.org/schema/mule/peoplematter" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/3.1/mule-vm.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.2/mule.xsd http://www.mulesoft.org/schema/mule/datapack http://www.mulesoft.org/schema/mule/datapack/3.2/mule-datapack.xsd"><flow name="act"><vm:inbound-endpoint path="act" exchange-pattern="request-response"/><datapack:delimited-output-transformer delimiter-char="," add-space="true">';
+        var selObj = document.getElementById('fields');
+        for (i=0; i<selObj.options.length; i++) {
+            if (selObj.options[i].selected) {
+               xml+='<datapack:column value="'+selObj.options[i].value+'"/>';
+            }
+        }
+
+        xml+='</datapack:delimited-output-transformer></flow></mule>';
+
+        document.getElementById('config').value = xml;
+    }
+</script>
+</body>
+
+
+</html>
