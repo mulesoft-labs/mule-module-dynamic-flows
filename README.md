@@ -22,7 +22,7 @@ and a list of configuration XMLs.
 
 
 Removing contexts
-================
+=================
 
  Removes a context added by Add.
 
