@@ -10,8 +10,6 @@
         http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/4.0/mule-sfdc.xsd
         http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 
-    <sfdc:config name="Salesforce" username="enter your username here"
-                 password="Enter your password Here" securityToken="Enter your security token here" />
 
     <dynamicflows:config />
 
@@ -50,17 +48,20 @@
 
         <dynamicflows:run contextName="#[variable:contextName]" flowName="act"/>
 
-        <sfdc:upsert type="Campaign" externalIdFieldName="Name">
-            <sfdc:objects>
-                <sfdc:object>
-                    <Name>#[variable:contextName]</Name>
-                    <packed__c>#[payload]</packed__c>
-                </sfdc:object>
-            </sfdc:objects>
-        </sfdc:upsert>
-
     </flow>
 
+    <flow name="runvmFlow">
+        <http:inbound-endpoint keep-alive="true" exchange-pattern="request-response" host="localhost" port="${http.port}" path="runvm"/>
+        <transformer ref="httpToMapTransformer"/>
+
+        <message-properties-transformer scope="invocation">
+            <add-message-property key="contextName" value="#[map-payload:campaignName]" />
+        </message-properties-transformer>
+
+
+        <dynamicflows:vm-run contextName="#[variable:contextName]" flowName="act"/>
+
+    </flow>
 </mule>
 
 

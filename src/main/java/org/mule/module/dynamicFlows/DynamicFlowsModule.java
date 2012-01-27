@@ -20,6 +20,8 @@
  */
 package org.mule.module.dynamicFlows;
 
+import org.mule.DefaultMuleEvent;
+import org.mule.MessageExchangePattern;
 import org.mule.api.MuleContext;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
@@ -37,6 +39,7 @@ import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;
 import org.mule.context.notification.MuleContextNotification;
 import org.mule.context.notification.NotificationException;
+import org.mule.session.DefaultMuleSession;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -104,7 +107,7 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
 
 
     /**
-     * Runs the flow added dynamically
+     * Runs the flow added dynamically using a VM transport (request-response)
      *
      * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:run}
      *
@@ -117,9 +120,27 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
     public MuleMessage run(String contextName, String flowName, MuleMessage message) throws MuleException
     {
         MuleContext context = getContextWith(contextName);
-        return context.getClient().send("vm://" + flowName, message);
+        Flow flow = (Flow) context.getRegistry().lookupFlowConstruct(flowName);
+        return flow.process(new DefaultMuleEvent(message, MessageExchangePattern.REQUEST_RESPONSE, new DefaultMuleSession(flow, context) )).getMessage();
     }
 
+
+    /**
+     * Runs the flow added dynamically
+     *
+     * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:vmRun}
+     *
+     * @param contextName The context identifier
+     * @param flowName The flow identifier
+     * @param message The flow's payload
+     * @return The mule Message
+     */
+    @Processor
+    public MuleMessage vmRun(String contextName, String flowName, MuleMessage message) throws MuleException
+    {
+        MuleContext context = getContextWith(contextName);
+        return context.getClient().send("vm://" + flowName, message);
+    }
 
     /**
      * Sets the parent application context.
