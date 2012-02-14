@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc"
+    xmlns:http="http://www.mulesoft.org/schema/mule/http"
+    xmlns:dynamicflows="http://www.mulesoft.org/schema/mule/dynamicflows"
+    xsi:schemaLocation="
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.2/mule.xsd
+         http://www.mulesoft.org/schema/mule/dynamicflows http://www.mulesoft.org/schema/mule/dynamicflows/1.0/mule-dynamicflows.xsd
+        http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/4.0/mule-sfdc.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+
+    <dynamicflows:config />
+
+
+    <custom-transformer name="httpToMapTransformer" class="org.mule.transport.http.transformers.HttpRequestBodyToParamMap" />
+
+
+    <custom-transformer name="mapForModuleTransformer" class="transformers.ConfigExtractor" />
+
+    <flow name="addFlow">
+        <http:inbound-endpoint keep-alive="true" exchange-pattern="request-response" host="localhost" port="${http.port}" path="add"/>
+
+        <transformer ref="httpToMapTransformer"/>
+
+        <message-properties-transformer scope="invocation">
+            <add-message-property key="contextName" value="#[map-payload:campaignName]" />
+        </message-properties-transformer>
+
+        <transformer ref="mapForModuleTransformer"/>
+
+        <dynamicflows:add contextName="#[variable:contextName]">
+            <dynamicflows:configs ref="#[payload]" />
+        </dynamicflows:add>
+
+    </flow>
+
+
+    <flow name="runFlow">
+        <http:inbound-endpoint keep-alive="true" exchange-pattern="request-response" host="localhost" port="${http.port}" path="run"/>
+        <transformer ref="httpToMapTransformer"/>
+
+        <message-properties-transformer scope="invocation">
+            <add-message-property key="contextName" value="#[map-payload:campaignName]" />
+        </message-properties-transformer>
+
+
+        <dynamicflows:run contextName="#[variable:contextName]" flowName="act"/>
+
+    </flow>
+
+    <flow name="runvmFlow">
+        <http:inbound-endpoint keep-alive="true" exchange-pattern="request-response" host="localhost" port="${http.port}" path="runvm"/>
+        <transformer ref="httpToMapTransformer"/>
+
+        <message-properties-transformer scope="invocation">
+            <add-message-property key="contextName" value="#[map-payload:campaignName]" />
+        </message-properties-transformer>
+
+
+        <dynamicflows:vm-run contextName="#[variable:contextName]" flowName="act"/>
+
+    </flow>
+</mule>
+
+

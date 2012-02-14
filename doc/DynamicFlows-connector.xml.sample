@@ -1,0 +1,40 @@
+<!-- BEGIN_INCLUDE(dynamicflows:add) -->
+<!-- We define the transformer for test, this transformer returns a map with
+contextName = The context name, and configs= a List of mule configs xml strings-->
+	<custom-transformer name="testTransformer"
+		class="util.SomeResourceTransformer" />
+
+	<!-- Initialize the Module -->
+	<dynamicflows:config />
+
+	<flow name="testAdd">
+		<transformer ref="testTransformer" />
+		<dynamicflows:add contextName="#[map-payload:contextName]">
+			<dynamicflows:configs ref="#[map-payload:configs]" />
+		</dynamicflows:add>
+	</flow>
+<!-- END_INCLUDE(dynamicflows:add) -->
+
+<!-- BEGIN_INCLUDE(dynamicflows:remove) -->
+	<dynamicflows:config />
+
+	<flow name="testDelete">
+		<dynamicflows:remove contextName="testContext"/>
+	</flow>
+<!-- END_INCLUDE(dynamicflows:remove) -->
+
+<!-- BEGIN_INCLUDE(dynamicflows:run) -->
+	<dynamicflows:config />
+
+ 	<flow name="testRun">
+		<dynamicflows:run contextName="testContext" flowName="echo1"/>
+	</flow> 
+<!-- END_INCLUDE(dynamicflows:run) -->
+
+<!-- BEGIN_INCLUDE(dynamicflows:vmRun) -->
+	<dynamicflows:config />
+
+ 	<flow name="testVmRun">
+		<dynamicflows:vm-run contextName="testContext" flowName="echo1"/>
+	</flow>
+<!-- END_INCLUDE(dynamicflows:vmRun) -->
