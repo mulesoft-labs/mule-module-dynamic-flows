@@ -126,12 +126,12 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
 
 
     /**
-     * Runs the flow added dynamically
+     * Runs the flow added dynamically using a vm inbound
      *
      * {@sample.xml ../../../doc/DynamicFlows-connector.xml.sample dynamicflows:vmRun}
      *
      * @param contextName The context identifier
-     * @param flowName The flow identifier
+     * @param flowName The flow identifier with the VM inbound
      * @param message The flow's payload
      * @return The mule Message
      */

@@ -41,6 +41,6 @@ Executes a flow with VM inbound.
                 <http:inbound-endpoint keep-alive="true" exchange-pattern="request-response" host="localhost" port="10443" path="run"/>
                 <transformer ref="httpToMapTransformer"/>
 
-                <dynamicflows:run contextName="#[map-payload:contextName]" flowName="#[map-payload:flowName]"/>
+                <dynamicflows:vm-run contextName="#[map-payload:contextName]" flowName="#[map-payload:flowName]"/>
 
         </flow>
