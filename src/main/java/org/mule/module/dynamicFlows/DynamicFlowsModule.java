@@ -120,7 +120,7 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
     public MuleMessage run(String contextName, String flowName, MuleMessage message) throws MuleException
     {
         MuleContext context = getContextWith(contextName);
-        Flow flow = (Flow) context.getRegistry().lookupFlowConstruct(flowName);
+        Flow flow = getFlowUsing(flowName,context);
         return flow.process(new DefaultMuleEvent(message, MessageExchangePattern.REQUEST_RESPONSE, new DefaultMuleSession(flow, context) )).getMessage();
     }
 
