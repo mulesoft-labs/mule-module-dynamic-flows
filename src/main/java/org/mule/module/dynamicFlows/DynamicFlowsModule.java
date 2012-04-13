@@ -100,9 +100,17 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
     @Processor
     public void remove(String contextName)
     {
-        checkExistenceOf(contextName);
+        if ( contexts.containsKey(contextName) )
+        {
+            try {
+                contexts.get(contextName).stop();
+                contexts.get(contextName).dispose();
+            } catch (MuleException e) {
+                throw new RuntimeException(e);
+            }
 
-        contexts.remove(contextName);
+            contexts.remove(contextName);
+        }
     }
 
 
