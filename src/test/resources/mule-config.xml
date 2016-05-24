@@ -14,14 +14,14 @@
       xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-        http://www.mulesoft.org/schema/mule/dynamicflows http://www.mulesoft.org/schema/mule/dynamicflows/1.0/mule-dynamicflows.xsd">
+        http://www.mulesoft.org/schema/mule/dynamicflows http://www.mulesoft.org/schema/mule/dynamicflows/current/mule-dynamicflows.xsd">
 
     <!-- We define the transformer for test -->
     <custom-transformer name="testTransformer"
                         class="util.SomeResourceTransformer" />
 
     <!-- Initialize the Module -->
-    <dynamicflows:config />
+    <!--<dynamicflows:config />-->
 
     <!-- The add Flow -->
     <flow name="testAdd">

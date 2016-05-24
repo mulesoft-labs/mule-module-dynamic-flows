@@ -23,9 +23,10 @@ package org.mule.module.dynamicFlows;
 import org.mule.DefaultMuleEvent;
 import org.mule.MessageExchangePattern;
 import org.mule.api.MuleContext;
+import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
-import org.mule.api.annotations.Module;
+import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.api.context.MuleContextAware;
@@ -44,6 +45,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import javax.inject.Inject;
 import javax.management.RuntimeErrorException;
 import java.io.ByteArrayInputStream;
 import java.util.*;
@@ -53,11 +55,14 @@ import java.util.*;
  *
  * @author MuleSoft, Inc.
  */
-@Module(name="dynamicflows", schemaVersion="1.0")
-public class DynamicFlowsModule implements ApplicationContextAware, MuleContextNotificationListener<MuleContextNotification>, MuleContextAware
+@Connector(name="dynamicflows", schemaVersion = "1.0", friendlyName="Dynamic Flows")
+public class DynamicFlowsModule implements ApplicationContextAware, MuleContextNotificationListener<MuleContextNotification>
 {
     private ApplicationContext applicationContext;
+
+    @Inject
     private MuleContext mainContext;
+
     private Map<String,MuleContext> contexts = Collections.synchronizedMap(new HashMap<String, MuleContext>());
 
     /**
@@ -121,15 +126,15 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
      *
      * @param contextName The context identifier
      * @param flowName The flow identifier
-     * @param message The flow's payload
-     * @return The mule Message
+     * @param event The flow's payload
+     * @return The payload of the mule message.
      */
     @Processor
-    public MuleMessage run(String contextName, String flowName, MuleMessage message) throws MuleException
+    public Object run(String contextName, String flowName, MuleEvent event) throws MuleException
     {
         MuleContext context = getContextWith(contextName);
         Flow flow = getFlowUsing(flowName,context);
-        return flow.process(new DefaultMuleEvent(message, MessageExchangePattern.REQUEST_RESPONSE, new DefaultMuleSession(flow, context) )).getMessage();
+        return flow.process(new DefaultMuleEvent(event, flow)).getMessage().getPayload();
     }
 
 
@@ -141,13 +146,13 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
      * @param contextName The context identifier
      * @param flowName The flow identifier with the VM inbound
      * @param message The flow's payload
-     * @return The mule Message
+     * @return The payload of the mule message.
      */
     @Processor
-    public MuleMessage vmRun(String contextName, String flowName, MuleMessage message) throws MuleException
+    public Object vmRun(String contextName, String flowName, MuleMessage message) throws MuleException
     {
         MuleContext context = getContextWith(contextName);
-        return context.getClient().send("vm://" + flowName, message);
+        return context.getClient().send("vm://" + flowName, message).getPayload();
     }
 
     /**
@@ -157,14 +162,12 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
      * @param applicationContext
      * @throws BeansException
      */
-    @Override
     public void setApplicationContext(ApplicationContext applicationContext)
             throws BeansException {
         this.applicationContext = applicationContext;
 
     }
 
-    @Override
     public void onNotification(MuleContextNotification notification) {
         if ( notification.getAction() == MuleContextNotification.CONTEXT_STOPPED )
         {
@@ -172,8 +175,7 @@ public class DynamicFlowsModule implements ApplicationContextAware, MuleContextN
         }
     }
 
-    @Override
-    public void setMuleContext(MuleContext context) {
+    public void setMainContext(MuleContext context) {
         this.mainContext = context;
         registerAsListener();
     }

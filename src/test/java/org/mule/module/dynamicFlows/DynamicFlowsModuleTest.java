@@ -22,16 +22,17 @@ package org.mule.module.dynamicFlows;
 
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
+import org.mule.api.MuleMessage;
 import org.mule.construct.Flow;
-import org.mule.tck.FunctionalTestCase;
-import org.mule.tck.AbstractMuleTestCase;
+import org.mule.tck.junit4.FunctionalTestCase;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class DynamicFlowsModuleTest extends FunctionalTestCase
 {
     @Override
-    protected String getConfigResources()
+    protected String getConfigFile()
     {
         return "mule-config.xml";
     }
@@ -46,7 +47,7 @@ public class DynamicFlowsModuleTest extends FunctionalTestCase
     public void testDelete() throws Exception
     {
         Flow flowDelete = lookupFlowConstruct("testDelete");
-        MuleEvent eventDelete = AbstractMuleTestCase.getTestEvent(null);
+        MuleEvent eventDelete = getTestEvent(null);
         flowDelete.process(eventDelete);
     }
 
@@ -56,7 +57,7 @@ public class DynamicFlowsModuleTest extends FunctionalTestCase
         addDynamicContext();
 
         Flow flow = lookupFlowConstruct("testRun");
-        MuleEvent event = AbstractMuleTestCase.getTestEvent("myRequest");
+        MuleEvent event = getTestEvent("myRequest");
         MuleEvent responseEvent = flow.process(event);
 
         assertEquals("myRequest", responseEvent.getMessage().getPayload());
@@ -64,7 +65,7 @@ public class DynamicFlowsModuleTest extends FunctionalTestCase
 
     private void addDynamicContext() throws Exception, MuleException {
         Flow flowAdd = lookupFlowConstruct("testAdd");
-        MuleEvent eventAdd = AbstractMuleTestCase.getTestEvent(null);
+        MuleEvent eventAdd = getTestEvent(null);
         flowAdd.process(eventAdd);
     }
 
@@ -77,7 +78,7 @@ public class DynamicFlowsModuleTest extends FunctionalTestCase
     protected <T> void runFlowAndExpect(String flowName, T expect) throws Exception
     {
         Flow flow = lookupFlowConstruct(flowName);
-        MuleEvent event = AbstractMuleTestCase.getTestEvent(null);
+        MuleEvent event = getTestEvent(null);
         MuleEvent responseEvent = flow.process(event);
 
         assertEquals(expect, responseEvent.getMessage().getPayload());
@@ -94,7 +95,7 @@ public class DynamicFlowsModuleTest extends FunctionalTestCase
     protected <T, U> void runFlowWithPayloadAndExpect(String flowName, T expect, U payload) throws Exception
     {
         Flow flow = lookupFlowConstruct(flowName);
-        MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
+        MuleEvent event = getTestEvent(payload);
         MuleEvent responseEvent = flow.process(event);
 
         assertEquals(expect, responseEvent.getMessage().getPayload());
@@ -107,6 +108,6 @@ public class DynamicFlowsModuleTest extends FunctionalTestCase
      */
     protected Flow lookupFlowConstruct(String name)
     {
-        return (Flow) AbstractMuleTestCase.muleContext.getRegistry().lookupFlowConstruct(name);
+        return (Flow) muleContext.getRegistry().lookupFlowConstruct(name);
     }
 }
